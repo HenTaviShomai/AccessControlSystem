@@ -1,6 +1,6 @@
 package com.AccessControlSystem.security;
 
-
+import com.AccessControlSystem.mapper.RoleMapper;
 import com.AccessControlSystem.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,16 +17,18 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final RoleMapper roleMapper;
     private final JwtUtils jwtUtils;
 
-    // 手动添加构造方法
-    public JwtAuthenticationFilter(JwtUtils jwtUtils) {
+    public JwtAuthenticationFilter(RoleMapper roleMapper, JwtUtils jwtUtils) {
+        this.roleMapper = roleMapper;
         this.jwtUtils = jwtUtils;
     }
 
@@ -40,10 +43,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Long userId = jwtUtils.getUserIdFromToken(token);
             String username = jwtUtils.getUsernameFromToken(token);
 
+            // 【关键修改】查询用户的权限列表
+            List<String> permissionCodes = roleMapper.selectPermissionCodesByUserId(userId);
+            log.debug("用户 {} 的权限: {}", username, permissionCodes);
+
+            // 转换为Spring Security需要的权限格式
+            List<SimpleGrantedAuthority> authorities = permissionCodes.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+
+            // 创建认证信息（带上权限）
             UserDetails userDetails = User.builder()
                     .username(username)
                     .password("")
-                    .authorities(new ArrayList<>())
+                    .authorities(authorities)
                     .build();
 
             UsernamePasswordAuthenticationToken authentication =
@@ -52,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            log.debug("用户认证成功: userId={}, username={}", userId, username);
+            log.debug("用户认证成功: userId={}, username={}, 权限数量={}", userId, username, authorities.size());
         } else if (StringUtils.hasText(token)) {
             log.debug("Token无效或已过期: {}", token);
         }
