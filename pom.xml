@@ -82,6 +82,20 @@
 
 
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>  <!-- 使用最新稳定版 -->
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- MyBatis-Plus 分页插件 SQL 解析器（3.5.9+ 必须） -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+            <version>3.5.13</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
