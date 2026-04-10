@@ -1,11 +1,11 @@
 package com.AccessControlSystem.security;
 
+
 import com.AccessControlSystem.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,25 +20,26 @@ import java.util.ArrayList;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
+
+    // 手动添加构造方法
+    public JwtAuthenticationFilter(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        // 1. 从请求头获取Token
         String token = getTokenFromRequest(request);
 
-        // 2. 校验Token
         if (StringUtils.hasText(token) && jwtUtils.validateToken(token)) {
             Long userId = jwtUtils.getUserIdFromToken(token);
             String username = jwtUtils.getUsernameFromToken(token);
 
-            // 3. 创建认证信息
             UserDetails userDetails = User.builder()
                     .username(username)
                     .password("")
@@ -49,7 +50,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(userId);
 
-            // 4. 存入SecurityContext
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             log.debug("用户认证成功: userId={}, username={}", userId, username);

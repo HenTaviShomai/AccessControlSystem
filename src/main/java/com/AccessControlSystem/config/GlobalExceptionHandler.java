@@ -3,7 +3,7 @@ package com.AccessControlSystem.config;
 
 import com.AccessControlSystem.exception.BusinessException;
 import com.AccessControlSystem.vo.Result;
-import com.AccessControlSystem.enums.ErrorCode
+import com.AccessControlSystem.enums.ErrorCode;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
