@@ -1,8 +1,4 @@
-Here is the **English version** of the technical design document (README.md) for your Enterprise-Grade Authorization System.
 
-You can copy this directly into your `README.md` file. This document follows real industry standards (similar to internal design docs at mid-to-large tech companies).
-
-```markdown
 # Enterprise-Grade Authorization System (RBAC + OAuth2 + Audit)
 
 ## 1. Executive Summary
@@ -114,7 +110,6 @@ CREATE INDEX idx_audit_user ON audit_log(user_id);
 
 ### 6.1 Login & JWT Generation
 
-```mermaid
 sequenceDiagram
     Client->>Auth: POST /login (user/pass)
     Auth->>MySQL: SELECT user WHERE username=?
