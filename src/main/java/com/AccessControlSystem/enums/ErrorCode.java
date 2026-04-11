@@ -32,7 +32,8 @@ public enum ErrorCode {
     ROLE_NOT_FOUND(4005, "角色不存在"),
     PERMISSION_NOT_FOUND(4006, "权限不存在"),
     REQUEST_TOO_FREQUENT(4007, "请求过于频繁，请稍后重试"),
-    REPEAT_SUBMIT(4008, "请勿重复提交");
+    REPEAT_SUBMIT(4008, "请勿重复提交"),
+    ROLE_CODE_EXISTS(4009, "角色代码已存在");
 
     private final Integer code;
     private final String msg;
