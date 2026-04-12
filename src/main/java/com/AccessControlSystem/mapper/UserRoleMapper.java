@@ -11,7 +11,11 @@ import java.util.List;
 
 @Mapper
 public interface UserRoleMapper extends BaseMapper<UserRole> {
-    
+    /**
+     * 根据角色ID查询用户ID列表
+     */
+    @Select("SELECT user_id FROM user_role WHERE role_id = #{roleId}")
+    List<Long> selectUserIdsByRoleId(@Param("roleId") Long roleId);
     /**
      * 根据用户ID删除所有角色关联
      */

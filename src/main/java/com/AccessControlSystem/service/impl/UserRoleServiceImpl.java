@@ -7,6 +7,7 @@ import com.AccessControlSystem.enums.ErrorCode;
 import com.AccessControlSystem.exception.BusinessException;
 import com.AccessControlSystem.mapper.UserMapper;
 import com.AccessControlSystem.mapper.UserRoleMapper;
+import com.AccessControlSystem.service.PermissionService;
 import com.AccessControlSystem.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     
     private final UserMapper userMapper;
     private final UserRoleMapper userRoleMapper;
+    private final PermissionService permissionService;
     
     @Override
     @Transactional
@@ -47,7 +49,8 @@ public class UserRoleServiceImpl implements UserRoleService {
                 userRoleMapper.insert(ur);
             }
         }
-        
+
+        permissionService.refreshUserPermissions(userId);
         log.info("分配角色成功: userId={}, roleIds={}", userId, roleIds);
     }
     

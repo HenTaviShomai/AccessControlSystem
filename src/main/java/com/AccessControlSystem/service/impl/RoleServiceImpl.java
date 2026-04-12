@@ -9,6 +9,7 @@ import com.AccessControlSystem.exception.BusinessException;
 import com.AccessControlSystem.mapper.PermissionMapper;
 import com.AccessControlSystem.mapper.RoleMapper;
 import com.AccessControlSystem.mapper.RolePermissionMapper;
+import com.AccessControlSystem.service.PermissionService;
 import com.AccessControlSystem.service.RoleService;
 import com.AccessControlSystem.vo.PermissionTreeVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -31,6 +32,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleMapper roleMapper;
     private final PermissionMapper permissionMapper;
     private final RolePermissionMapper rolePermissionMapper;
+    private final PermissionService permissionService;
     
     @Override
     public List<RoleResponse> list() {
@@ -114,21 +116,21 @@ public class RoleServiceImpl implements RoleService {
         
         log.info("删除角色成功: roleId={}", id);
     }
-    
+
     @Override
     @Transactional
     public void assignPermissions(AssignPermissionsRequest request) {
         Long roleId = request.getRoleId();
-        
+
         // 检查角色是否存在
         Role role = roleMapper.selectById(roleId);
         if (role == null) {
             throw new BusinessException(ErrorCode.ROLE_NOT_FOUND);
         }
-        
+
         // 删除原有权限关联
         rolePermissionMapper.deleteByRoleId(roleId);
-        
+
         // 添加新的权限关联
         List<Long> permissionIds = request.getPermissionIds();
         if (permissionIds != null && !permissionIds.isEmpty()) {
@@ -139,7 +141,10 @@ public class RoleServiceImpl implements RoleService {
                 rolePermissionMapper.insert(rp);
             }
         }
-        
+
+        // 【新增】刷新该角色关联的所有用户的权限缓存
+        permissionService.refreshPermissionsByRoleId(roleId);
+
         log.info("分配权限成功: roleId={}, permissionIds={}", roleId, permissionIds);
     }
     

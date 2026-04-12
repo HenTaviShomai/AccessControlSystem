@@ -1,5 +1,6 @@
 package com.AccessControlSystem.service.impl;
-
+import com.AccessControlSystem.constant.RedisConstants;
+import com.AccessControlSystem.service.PermissionService;
 import com.AccessControlSystem.dto.LoginRequest;
 import com.AccessControlSystem.dto.LoginResponse;
 import com.AccessControlSystem.entity.User;
@@ -11,6 +12,7 @@ import com.AccessControlSystem.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final RedisTemplate<String, String> redisTemplate;
+    private final PermissionService permissionService;
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -48,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtUtils.generateToken(user.getId(), user.getUsername());
         String refreshToken = jwtUtils.generateRefreshToken(user.getId());
         Long expireIn = jwtUtils.getRemainingTime(token);
-
+        permissionService.getUserPermissions(user.getId());
         // 5. 用户信息
         LoginResponse.UserInfo userInfo = new LoginResponse.UserInfo(
                 user.getId(),
@@ -65,12 +68,8 @@ public class AuthServiceImpl implements AuthService {
         // 将Token加入黑名单
         Long remainingTime = jwtUtils.getRemainingTime(token);
         if (remainingTime > 0) {
-            redisTemplate.opsForValue().set(
-                    "blacklist:" + token,
-                    "1",
-                    remainingTime,
-                    TimeUnit.MILLISECONDS
-            );
+            String blacklistKey = RedisConstants.TOKEN_BLACKLIST_KEY + token;
+            redisTemplate.opsForValue().set(blacklistKey, "1", remainingTime, TimeUnit.MILLISECONDS);
         }
         log.info("用户登出成功");
     }
