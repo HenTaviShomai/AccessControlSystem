@@ -1,12 +1,15 @@
 package com.AccessControlSystem.security;
 
+import com.AccessControlSystem.constant.RedisConstants;
 import com.AccessControlSystem.mapper.RoleMapper;
+import com.AccessControlSystem.service.PermissionService;
 import com.AccessControlSystem.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,10 +29,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final RoleMapper roleMapper;
     private final JwtUtils jwtUtils;
-
-    public JwtAuthenticationFilter(RoleMapper roleMapper, JwtUtils jwtUtils) {
+    private final RedisTemplate<String, String> redisTemplate;
+    private final PermissionService permissionService;
+    public JwtAuthenticationFilter(RoleMapper roleMapper, JwtUtils jwtUtils, RedisTemplate<String, String> redisTemplate, PermissionService permissionService) {
         this.roleMapper = roleMapper;
         this.jwtUtils = jwtUtils;
+        this.redisTemplate = redisTemplate;
+        this.permissionService = permissionService;
     }
 
     @Override
@@ -40,9 +46,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = getTokenFromRequest(request);
 
         if (StringUtils.hasText(token) && jwtUtils.validateToken(token)) {
+
+            String blacklistKey = RedisConstants.TOKEN_BLACKLIST_KEY + token;
+            Boolean isBlacklisted = redisTemplate.hasKey(blacklistKey);
+            if (Boolean.TRUE.equals(isBlacklisted)) {
+                log.debug("Token已在黑名单中: token={}", token);
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+
             Long userId = jwtUtils.getUserIdFromToken(token);
             String username = jwtUtils.getUsernameFromToken(token);
-
             // 【关键修改】查询用户的权限列表
             List<String> permissionCodes = roleMapper.selectPermissionCodesByUserId(userId);
             log.debug("用户 {} 的权限: {}", username, permissionCodes);
@@ -59,7 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .authorities(authorities)
                     .build();
 
-            UsernamePasswordAuthenticationToken authentication =
+            var authentication =
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(userId);
 
