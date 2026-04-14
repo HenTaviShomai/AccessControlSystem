@@ -1,8 +1,8 @@
-package com.AccessControlSystem.aspect;
+package com.accesscontrolsystem.aspect;
 
-import com.AccessControlSystem.annotation.RequirePermission;
-import com.AccessControlSystem.enums.ErrorCode;
-import com.AccessControlSystem.exception.BusinessException;
+import com.accesscontrolsystem.annotation.*;
+import com.accesscontrolsystem.enums.ErrorCode;
+import com.accesscontrolsystem.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,7 +32,7 @@ public class PermissionAspect {
         // 1. 获取方法上的注解
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        RequirePermission requirePermission = method.getAnnotation(RequirePermission.class);
+        com.AccessControlSystem.annotation.RequirePermission requirePermission = method.getAnnotation(RequirePermission.class);
         
         if (requirePermission == null) {
             return;
@@ -40,7 +40,7 @@ public class PermissionAspect {
         
         // 2. 获取需要的权限码列表
         String[] requiredPermissions = requirePermission.value();
-        RequirePermission.Logical logical = requirePermission.logical();
+        com.AccessControlSystem.annotation.RequirePermission.Logical logical = requirePermission.logical();
         
         // 3. 获取当前登录用户的权限列表
         Set<String> userPermissions = getCurrentUserPermissions();
