@@ -1,4 +1,4 @@
-package com.AccessControlSystem.annotation;
+package com.accesscontrolsystem.annotation;
 
 import java.lang.annotation.*;
 
