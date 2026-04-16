@@ -95,12 +95,6 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>  <!-- 使用最新稳定版 -->
-            <scope>provided</scope>
-        </dependency>
 
         <!-- MyBatis-Plus 分页插件 SQL 解析器（3.5.9+ 必须） -->
         <dependency>
