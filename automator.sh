@@ -6,7 +6,7 @@
 # ============================================
 
 # 配置区域 - 请修改为你的实际路径
-REPO_PATH="/Users/mac/IdeaProjects/AccessControlSystem"          # 你的仓库路径
+REPO_PATH="/Users/kerbear/IdeaProjects/AccessControlSystem"          # 你的仓库路径
 FILE_NAME="daily_log.txt"               # 要修改的文件名
 COMMIT_MESSAGE="Daily auto commit"      # 提交信息
 
