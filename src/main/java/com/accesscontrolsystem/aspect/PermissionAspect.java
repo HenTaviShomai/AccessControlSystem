@@ -1,7 +1,6 @@
 package com.accesscontrolsystem.aspect;
 
 import com.accesscontrolsystem.annotation.*;
-import com.accesscontrolsystem.annotation.*;
 import com.accesscontrolsystem.enums.ErrorCode;
 import com.accesscontrolsystem.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class PermissionAspect {
     /**
      * 在方法执行前进行权限校验
      */
-    @Before("@annotation(com.AccessControlSystem.annotation.RequirePermission)")
+    @Before("@annotation(com.accesscontrolsystem.annotation.RequirePermission)")
     public void checkPermission(JoinPoint joinPoint) {
         // 1. 获取方法上的注解
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
