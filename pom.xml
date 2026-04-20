@@ -94,12 +94,17 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version> <!-- 推荐使用较新稳定版本 -->
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>  <!-- 使用最新稳定版 -->
-            <scope>provided</scope>
+            <version>1.18.44</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- MyBatis-Plus 分页插件 SQL 解析器（3.5.9+ 必须） -->
