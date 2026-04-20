@@ -1,4 +1,4 @@
-package com.AccessControlSystem.utils;
+package com.accesscontrolsystem.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,10 +19,10 @@ public class SensitiveDataUtils {
     );
     
     // 手机号正则
-    private static final Pattern PHONE_PATTERN = Pattern.compile("1[3-9]\d{9}");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("1[3-9]\\d{9}");
     
     // 身份证正则
-    private static final Pattern ID_CARD_PATTERN = Pattern.compile("[1-9]\d{16}[0-9Xx]");
+    private static final Pattern ID_CARD_PATTERN = Pattern.compile("[1-9]\\d{16}[0-9Xx]");
     
     /**
      * 脱敏请求参数

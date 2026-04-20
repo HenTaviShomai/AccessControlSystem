@@ -1,7 +1,21 @@
 package com.accesscontrolsystem.constant;
 
 public class RedisConstants {
-    
+    /**
+     * 限流Key前缀
+     */
+    public static final String RATE_LIMIT_KEY = "rate:limit:";
+
+    /**
+     * 防重复提交Key前缀
+     */
+    public static final String REPEAT_SUBMIT_KEY = "repeat:submit:";
+
+    /**
+    /**
+     * 登录锁定Key
+     */
+    public static final String LOGIN_LOCK_KEY = "auth:login:lock:";
     /**
      * 用户权限缓存Key
      * 格式: auth:user:permissions:{userId}

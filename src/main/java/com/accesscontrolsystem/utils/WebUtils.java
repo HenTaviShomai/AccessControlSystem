@@ -1,4 +1,4 @@
-package com.AccessControlSystem.utils;
+package com.accesscontrolsystem.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

@@ -16,6 +16,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
+    @com.accesscontrolsystem.annotation.RateLimit(key = "login", permitsPerSecond = 5)
     public Result<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         LoginResponse response = authService.login(request);
         return Result.success(response);

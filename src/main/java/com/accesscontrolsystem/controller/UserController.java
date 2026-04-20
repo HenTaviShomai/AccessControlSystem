@@ -1,5 +1,7 @@
 package com.accesscontrolsystem.controller;
 
+import com.accesscontrolsystem.*;
+import com.accesscontrolsystem.annotation.NoRepeatSubmit;
 import com.accesscontrolsystem.dto.UserPageRequest;
 import com.accesscontrolsystem.dto.UserRequest;
 import com.accesscontrolsystem.dto.UserResponse;
@@ -45,6 +47,8 @@ public class UserController {
      * 新增用户
      * 权限：user:add
      */
+    @com.AccessControlSystem.annotation.AuditLog("新增用户")
+    @NoRepeatSubmit(duration = 3)
     @PostMapping
     @PreAuthorize("hasAuthority('user:add')")
     public Result<Void> add(@Valid @RequestBody UserRequest request) {
@@ -58,6 +62,9 @@ public class UserController {
      */
     @PutMapping
     @PreAuthorize("hasAuthority('user:edit')")
+    @com.AccessControlSystem.annotation.AuditLog("修改用户")
+    @NoRepeatSubmit(duration = 3)
+
     public Result<Void> update(@Valid @RequestBody UserUpdateRequest request) {
         userService.update(request);
         return Result.success();
