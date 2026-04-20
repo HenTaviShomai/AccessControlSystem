@@ -5,6 +5,11 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
+    // 限流相关
+
+
+    // 登录锁定
+    USER_LOCKED(4010, "账号已被锁定"),
 
     SUCCESS(0, "成功"),
     SYSTEM_ERROR(500, "系统繁忙，请稍后重试"),

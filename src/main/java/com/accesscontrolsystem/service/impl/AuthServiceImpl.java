@@ -27,9 +27,16 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtils jwtUtils;
     private final RedisTemplate<String, String> redisTemplate;
     private final PermissionService permissionService;
+    private final com.accesscontrolsystem.service.LoginAttemptService loginAttemptService;
 
     @Override
     public LoginResponse login(LoginRequest request) {
+        String username = request.getUsername();
+        if (loginAttemptService.isLocked(username)) {
+            Long remainingTime = loginAttemptService.getRemainingLockTime(username);
+            throw new BusinessException(ErrorCode.USER_LOCKED,
+                    String.format("账号已被锁定，请%d分钟后重试", remainingTime / 60));
+        }
         // 1. 查询用户
         User user = userMapper.selectByUsername(request.getUsername());
         if (user == null) {

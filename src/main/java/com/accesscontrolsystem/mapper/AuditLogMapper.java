@@ -1,7 +1,7 @@
-package com.AccessControlSystem.mapper;
+package com.accesscontrolsystem.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.AccessControlSystem.entity.AuditLog;
+import com.accesscontrolsystem.entity.AuditLog;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
