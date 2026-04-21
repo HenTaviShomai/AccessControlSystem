@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -28,13 +28,13 @@ class UserServiceTest extends BaseTest {
     @Autowired
     private UserService userService;
     
-    @MockBean
+    @MockitoBean
     private UserMapper userMapper;
     
-    @MockBean
+    @MockitoBean
     private RoleMapper roleMapper;
     
-    @MockBean
+    @MockitoBean
     private PasswordEncoder passwordEncoder;
     
     private User testUser;
@@ -111,7 +111,7 @@ class UserServiceTest extends BaseTest {
         });
         
         assertEquals(ErrorCode.USERNAME_EXISTS.getCode(), exception.getCode());
-        verify(userMapper, never()).insert(any());
+        verify(userMapper, never()).insert(any((User.class)));
     }
     
     @Test

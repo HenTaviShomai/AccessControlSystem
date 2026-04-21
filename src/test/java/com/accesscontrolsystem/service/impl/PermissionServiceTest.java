@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 
@@ -26,16 +26,16 @@ class PermissionServiceTest extends BaseTest {
     @Autowired
     private PermissionService permissionService;
     
-    @MockBean
+    @MockitoBean
     private UserRoleMapper userRoleMapper;
     
-    @MockBean
+    @MockitoBean
     private PermissionMapper permissionMapper;
     
-    @MockBean
+    @MockitoBean
     private RedisTemplate<String, String> redisTemplate;
     
-    @MockBean
+    @MockitoBean
     private SetOperations<String, String> setOperations;
     
     @BeforeEach
