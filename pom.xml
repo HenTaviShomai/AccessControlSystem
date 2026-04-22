@@ -27,7 +27,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>25</java.version>
+        <java.version>17</java.version>
     </properties>
 
 
@@ -100,6 +100,11 @@
             <version>2.15.2</version> <!-- 推荐使用较新稳定版本 -->
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.0.0-jre</version>  <!-- 用最新稳定版 -->
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
