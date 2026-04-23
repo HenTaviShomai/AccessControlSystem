@@ -1,0 +1,33 @@
+# 构建阶段：使用 Maven 镜像，但依赖从本地复制
+FROM maven:3.9-eclipse-temurin-17 AS builder
+
+WORKDIR /app
+
+# 复制本地 Maven 仓库（关键步骤）
+COPY ./m2-repo /root/.m2/repository
+
+# 复制 pom.xml 和源代码
+COPY pom.xml .
+COPY src ./src
+
+# 离线构建（-o 表示 offline）
+RUN mvn clean package -DskipTests -o
+
+# 运行阶段
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+# 设置时区
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# 从构建阶段复制 jar 包
+COPY --from=builder /app/target/*.jar app.jar
+
+# 创建非 root 用户
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+USER appuser
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-Xmx256m", "-Xms256m", "-jar", "app.jar"]

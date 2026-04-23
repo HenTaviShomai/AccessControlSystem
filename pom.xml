@@ -8,7 +8,7 @@
         <version>4.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.example</groupId>
+    <groupId>org.vibeprogram</groupId>
     <artifactId>AccessControlSystem</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>AccessControlSystem</name>
