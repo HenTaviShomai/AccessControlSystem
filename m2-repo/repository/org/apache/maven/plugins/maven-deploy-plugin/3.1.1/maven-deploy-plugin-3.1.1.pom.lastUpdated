@@ -1,0 +1,4 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Mon Apr 20 19:22:05 CST 2026
+@default-central-https\://repo.maven.apache.org/maven2/.lastUpdated=1776684125059
+https\://repo.maven.apache.org/maven2/.error=Could not transfer artifact org.apache.maven.plugins\:maven-deploy-plugin\:pom\:3.1.1 from/to central (https\://repo.maven.apache.org/maven2)\: sun.security.validator.ValidatorException\: PKIX path building failed\: sun.security.provider.certpath.SunCertPathBuilderException\: unable to find valid certification path to requested target
