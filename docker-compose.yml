@@ -42,7 +42,7 @@ services:
   # 应用服务
   app:
     build: .
-    container_name: auth-app
+    container_name: acsystemJ17
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/auth_system?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
