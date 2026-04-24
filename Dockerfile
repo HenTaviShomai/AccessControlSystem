@@ -1,23 +1,19 @@
-# 单阶段构建 - 不需要 Maven！
-FROM eclipse-temurin:17-jre-alpine
+# 更精简版本 - 无需 curl
+FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
 
-# 安装 curl（健康检查用）
-RUN apk add --no-cache curl
+COPY ./acsystem-0.0.1.jar  app.jar
 
-# 直接复制本地已构建的 jar 包
-# 前提：已执行 mvn package 生成了 jar
-COPY target/auth-system-*.jar app.jar
+RUN addgroup -g 1000 appuser && \
+    adduser -D -u 1000 -G appuser appuser
 
-# 创建非 root 用户
-RUN addgroup -g 1000 -S appuser && \
-    adduser -u 1000 -S appuser -G appuser
 USER appuser
 
 EXPOSE 8080
 
+# 使用 TCP 连接检查（不需要 curl）
 HEALTHCHECK --interval=30s --timeout=3s --start-period=90s --retries=3 \
-    CMD curl -f http://localhost:8080/actuator/health || exit 1
+    CMD nc -z localhost 8080 || exit 1
 
 ENTRYPOINT ["java", "-Xmx256m", "-Xms128m", "-XX:+UseG1GC", "-jar", "app.jar"]

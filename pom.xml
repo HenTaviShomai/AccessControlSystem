@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>AccessControlSystem</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>acsystem</artifactId>
+    <version>0.0.1</version>
     <name>AccessControlSystem</name>
     <description>AccessControlSystem</description>
     <url/>
