@@ -28,15 +28,9 @@
     </scm>
     <properties>
         <java.version>17</java.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
     </properties>
-
-
-
-
-
-
-
-
     <dependencies>
 
 
@@ -243,6 +237,10 @@
 
     <build>
         <plugins>
+
+
+
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -251,13 +249,24 @@
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+
                         </exclude>
                     </excludes>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M9</version>  <!-- 兼容 Maven 3.6.0+ -->
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+
                 <executions>
                     <execution>
                         <id>default-compile</id>
@@ -270,10 +279,16 @@
                                 <path>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>
+                                    <version>1.18.24</version>
                                 </path>
                             </annotationProcessorPaths>
                         </configuration>
                     </execution>
+
+
+
+
+
                     <execution>
                         <id>default-testCompile</id>
                         <phase>test-compile</phase>
@@ -285,13 +300,21 @@
                                 <path>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>
+                                    <version>1.18.24</version>
                                 </path>
                             </annotationProcessorPaths>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
+
         </plugins>
+
+
+
+
     </build>
 
 </project>
