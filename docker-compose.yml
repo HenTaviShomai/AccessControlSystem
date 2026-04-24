@@ -42,7 +42,7 @@ services:
   # 应用服务
   app:
     build: .
-    container_name: access-control-app
+    container_name: acsystemJ25
     ports:
       - "8080:8080"
     environment:

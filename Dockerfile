@@ -1,6 +1,6 @@
 # 使用 Amazon Corretto 25
 FROM amazoncorretto:25-alpine AS builder
-
+ENV SPRING_PROFILES_ACTIVE=docker
 WORKDIR /app
 
 # 安装 Maven
