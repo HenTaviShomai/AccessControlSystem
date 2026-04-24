@@ -23,7 +23,7 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 5
   redis:
-    host: localhost
+    host: redis
     port: 6379
     password:
     timeout: 5000ms

@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/access_control?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8}
+    # 建议将 localhost 改为 mysql 容器名作为默认值，方便 Docker 内部联通
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql:3306/access_control?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8}
     username: ${SPRING_DATASOURCE_USERNAME:root}
     password: ${SPRING_DATASOURCE_PASSWORD:root123}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,16 +12,18 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
 
-  redis:
-    host: redis
-    port: 6379
-    password:
-    timeout: 5000ms
-    lettuce:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
+  # 关键修改：从 spring.redis 变更为 spring.data.redis
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:redis}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      password: ${SPRING_DATA_REDIS_PASSWORD:}
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
 
   jackson:
     time-zone: Asia/Shanghai
@@ -48,3 +51,5 @@ jwt:
 logging:
   level:
     com.accesscontrolsystem: INFO
+    # 生产排查建议开启此项，可以看清配置加载来源
+    org.springframework.boot.context.config: INFO

@@ -11,7 +11,7 @@ spring:
     console:
       enabled: true
   redis:
-    host: localhost
+    host: redis
     port: 6379
     timeout: 5000ms
 
