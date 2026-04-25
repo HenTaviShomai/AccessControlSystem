@@ -18,7 +18,7 @@ services:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - auth-network
+      - acs-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
       interval: 10s
@@ -35,7 +35,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - auth-network
+      - acs-network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -71,12 +71,12 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - auth-network
+      - acs-network
     restart: unless-stopped
 
 # 网络配置
 networks:
-  auth-network:
+  acs-network:
     driver: bridge
 
 # 数据卷配置
