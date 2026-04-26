@@ -44,7 +44,7 @@ services:
 
   # 应用服务
   app:
-    build: .
+    image: acsystemJ17
     container_name: acsystemJ17
     environment:
 

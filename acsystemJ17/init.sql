@@ -1,6 +1,6 @@
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS access_control CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE access_control;
+CREATE DATABASE IF NOT EXISTS auth_system CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE auth_system;
 
 -- 用户表
 CREATE TABLE IF NOT EXISTS `user` (
