@@ -22,16 +22,17 @@ spring:
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
-  redis:
-    host: localhost
-    port: 6379
-    password:
-    timeout: 5000ms
-    lettuce:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password:
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
 
 server:
   port: 8080

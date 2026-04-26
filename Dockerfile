@@ -3,7 +3,7 @@ FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
 
-COPY ./acsystem-0.0.2.jar  app.jar
+COPY ./acsystem-0.0.1.jar  app.jar
 
 RUN addgroup -g 1000 appuser && \
     adduser -D -u 1000 -G appuser appuser
