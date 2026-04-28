@@ -34,3 +34,10 @@ build/
 *.tar
 *.rdb
 acsystemJ17/*.tar
+
+# 忽略大文件（不要提交到Git）
+*.tar
+*.rdb
+acsystemJ17/*.tar
+dump.rdb
+acsystem-*.jar
