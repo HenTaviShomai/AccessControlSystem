@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # MySQL 数据库
+  mysql:
+    image: mysql:8.0
+    container_name: acs-mysql
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: auth_system
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - acs-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: acs-redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - acs-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 应用服务
+  app:
+    image: accesscontrolsystem_app
+    container_name: acsystemJ17
+    environment:
+
+      SPRING_PROFILES_ACTIVE: dev
+      # 数据源配置
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/auth_system?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+      # Redis 配置 - 关键：host 必须是服务名 "redis"
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      SPRING_REDIS_PASSWORD: ""
+      # JWT 配置
+      JWT_SECRET: your-256-bit-secret-key-for-jwt-signature-2024
+      JWT_EXPIRATION: 1800000
+      JWT_REFRESH_EXPIRATION: 604800000
+      # 日志级别
+      LOGGING_LEVEL_COM_ACCESSCONTROLSYSTEM: DEBUG
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - acs-network
+    restart: unless-stopped
+
+# 网络配置
+networks:
+  acs-network:
+    driver: bridge
+
+# 数据卷配置
+volumes:
+  mysql-data:
+  redis-data:
