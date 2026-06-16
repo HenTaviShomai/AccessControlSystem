@@ -47,7 +47,7 @@ public class UserController {
      * 新增用户
      * 权限：user:add
      */
-    @com.AccessControlSystem.annotation.AuditLog("新增用户")
+    @com.accesscontrolsystem.annotation.AuditLog("新增用户")
     @NoRepeatSubmit(duration = 3)
     @PostMapping
     @PreAuthorize("hasAuthority('user:add')")
@@ -62,7 +62,7 @@ public class UserController {
      */
     @PutMapping
     @PreAuthorize("hasAuthority('user:edit')")
-    @com.AccessControlSystem.annotation.AuditLog("修改用户")
+    @com.accesscontrolsystem.annotation.AuditLog("修改用户")
     @NoRepeatSubmit(duration = 3)
 
     public Result<Void> update(@Valid @RequestBody UserUpdateRequest request) {

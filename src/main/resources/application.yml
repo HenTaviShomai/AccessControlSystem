@@ -10,9 +10,6 @@ jwt:
 ---
 # 开发环境配置
 spring:
-  config:
-    activate:
-      on-profile: dev
   datasource:
     url: jdbc:mysql://localhost:3306/auth_system?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowPublicKeyRetrieval=true
     username: root
@@ -50,3 +47,12 @@ mybatis-plus:
 logging:
   level:
     com.example.authsystem: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+  show-actuator: false

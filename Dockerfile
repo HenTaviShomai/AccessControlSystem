@@ -1,4 +1,4 @@
-# 更精简版本 - 无需 curl
+
 FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app

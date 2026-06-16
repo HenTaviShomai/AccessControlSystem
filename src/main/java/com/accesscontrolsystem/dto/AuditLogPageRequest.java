@@ -1,4 +1,4 @@
-package com.AccessControlSystem.dto;
+package com.accesscontrolsystem.dto;
 
 import jakarta.validation.constraints.Min;
 import lombok.Data;
