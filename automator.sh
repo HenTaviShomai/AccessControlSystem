@@ -14,7 +14,7 @@ COMMIT_MESSAGE="Daily auto commit"      # 提交信息
 cd "$REPO_PATH" || exit 1
 
 # 检查是否在git仓库中
-if ! git rev-parse --git-dir > /dev/null 2>&1; then
+if ! git rev-parse --git-dir >> /dev/null 2>&1; then
     echo "错误: $REPO_PATH 不是一个Git仓库"
     exit 1
 fi
